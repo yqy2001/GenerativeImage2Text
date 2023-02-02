@@ -1,0 +1,4 @@
+azfuse @ git+https://gitee.com/mirrors_microsoft/azfuse.git
+torchvision
+transformers
+boto3
