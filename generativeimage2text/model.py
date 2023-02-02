@@ -7,7 +7,7 @@ from .layers.decoder import (TransformerDecoderTextualHead,
 
 
 def get_git_model(tokenizer, param):
-    image_encoder = get_image_encoder(
+    image_encoder = get_image_encoder(  # get CLIP image encoder
         param.get('image_encoder_type', 'CLIPViT_B_16'),
         input_resolution=param.get('test_crop_size', 224),
     )

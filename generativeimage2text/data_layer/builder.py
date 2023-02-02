@@ -7,18 +7,18 @@ def collate_fn(batch):
     # with the default collate function
     ele = batch[0]
     if isinstance(ele, dict):
-        return {key: collate_fn([d[key] for d in batch]) for key in ele}
+        return {key: collate_fn([d[key] for d in batch]) for key in ele}  #
     elif isinstance(ele, (tuple, list)):
         return [collate_fn(x) for x in zip(*batch)]
     else:
         if all(isinstance(b, torch.Tensor) for b in batch) and len(batch) > 0:
             if not all(b.shape == batch[0].shape for b in batch[1:]):
-                assert all(len(b.shape) == len(batch[0].shape) for b in batch[1:])
+                assert all(len(b.shape) == len(batch[0].shape) for b in batch[1:])  # assert same dim of all tensors
                 shape = torch.tensor([b.shape for b in batch])
                 max_shape = tuple(shape.max(dim=0)[0].tolist())
                 batch2 = []
                 for b in batch:
-                    if any(c < m for c, m in zip(b.shape, max_shape)):
+                    if any(c < m for c, m in zip(b.shape, max_shape)):  # padding
                         b2 = torch.zeros(max_shape, dtype=b.dtype, device=b.device)
                         if b.dim() == 1:
                             b2[:b.shape[0]] = b

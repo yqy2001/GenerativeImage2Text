@@ -45,9 +45,9 @@ def get_data(image_file, prefix, target, tokenizer, image_transform):
         target, padding='do_not_pad',
         add_special_tokens=False,
         truncation=True, max_length=max_text_len)
-    need_predict = [0] * len(prefix_encoding['input_ids']) + [1] * len(target_encoding['input_ids'])
+    need_predict = [0] * len(prefix_encoding['input_ids']) + [1] * len(target_encoding['input_ids'])   # dont predict the prefix
     payload = prefix_encoding['input_ids'] + target_encoding['input_ids']
-    if len(payload) > max_text_len:
+    if len(payload) > max_text_len:  # todo: why no -2 ?
         payload = payload[-(max_text_len - 2):]
         need_predict = need_predict[-(max_text_len - 2):]
     input_ids = [tokenizer.cls_token_id] + payload + [tokenizer.sep_token_id]
@@ -228,9 +228,9 @@ def forward_backward_example(image_files, captions, prefixs=None):
     image_transform = get_image_transform(cfg)
     for image_file, prefix, target in zip(image_files, prefixs, captions):
         data = get_data(image_file, prefix, target,
-                        tokenizer, image_transform)
+                        tokenizer, image_transform)  # process raw img and txt into tensors
         all_data.append(data)
-    data = collate_fn(all_data)
+    data = collate_fn(all_data)  # collate: padding and organize data into batch
     logging.info(image_transform)
     data = recursive_to_device(data, 'cuda')
 

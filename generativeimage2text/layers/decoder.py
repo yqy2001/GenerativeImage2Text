@@ -199,7 +199,7 @@ def create_decoder(decoder_type, norm_type,
             attention_probs_dropout_prob=0.1,
             layer_norm_eps=1e-12,
         )
-        config.pre_norm=(norm_type == 'pre')
+        config.pre_norm = (norm_type == 'pre')
         config.use_mlp_wrapper = use_mlp_wrapper
         config.output_hidden_states = output_hidden_states
         encoder = BertEncoder(config)
